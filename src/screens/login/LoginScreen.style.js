@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#FF8C00",
-    height: height * 0.2, // 20% dari tinggi layar agar responsif
+    height: height * 0.2, // Sama dengan LoginScreen agar serasi
     borderBottomLeftRadius: 50,
     borderBottomRightRadius: 50,
     justifyContent: "center",
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   logoSection: {
     alignItems: "center",
-    marginTop: 30,    
+    marginTop: 30, // Sama seperti di LoginScreen
   },
   logo: {
     width: 300, 
@@ -64,13 +64,7 @@ const styles = StyleSheet.create({
   eyeIcon: {
     padding: 10,
   },
-  forgotPassword: {
-    alignSelf: "flex-end",
-    color: "#FF8C00",
-    fontSize: 14,
-    marginBottom: 20,
-  },
-  loginButton: {
+  registerButton: {
     width: "100%",
     backgroundColor: "#FF8C00",
     paddingVertical: 15,
@@ -78,9 +72,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 10,
   },
-  loginButtonText: {
+  registerButtonText: {
     color: "#fff",
     fontSize: 18,
+    fontWeight: "bold",
+  },
+  loginContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  loginText: {
+    fontSize: 14,
+    color: "#333",
+  },
+  loginLink: {
+    color: "#FF8C00",
     fontWeight: "bold",
   },
   registerContainer: {
@@ -94,6 +101,25 @@ const styles = StyleSheet.create({
   },
   registerLink: {
     color: "#FF8C00",
+    fontWeight: "bold",
+  },
+  forgotPassword: {
+    alignSelf: "flex-end",
+    color: "#FF8C00",
+    fontSize: 14,
+    marginBottom: 20,
+  },
+
+  loginButton: {
+    width: "90%",
+    backgroundColor: "#FF8C00",
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  loginButtonText: {
+    color: "#fff",
+    fontSize: 18,
     fontWeight: "bold",
   },
 });

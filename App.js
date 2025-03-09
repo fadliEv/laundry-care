@@ -20,13 +20,14 @@ const AppContent = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      {currentUser ? (
+      {/* {currentUser ? (
         <DashboardScreen />
       ) : isRegistering ? (
         <RegisterScreen onRegister={() => setIsRegistering(false)} />
       ) : (
-        <LoginScreen />
-      )}      
+        )}       */}
+        {/* <LoginScreen /> */}
+      <RegisterScreen/>
     </View>
   );
 };
