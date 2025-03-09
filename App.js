@@ -1,20 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { View, Button, ActivityIndicator } from "react-native";
+import useAuth from "./src/hooks/useAuth";
+import DashboardScreen from "./src/screens/dashboard/DashboardScreen";
+import RegisterScreen from "./src/screens/register/RegisterScreen";
+import LoginScreen from "./src/screens/login/LoginScreen";
+import { AuthProvider } from "./src/contexts/authContext";
 
-export default function App() {
+const AppContent = () => {
+  const { currentUser, loading } = useAuth();
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1 }}>
+      {currentUser ? (
+        <DashboardScreen />
+      ) : isRegistering ? (
+        <RegisterScreen onRegister={() => setIsRegistering(false)} />
+      ) : (
+        <LoginScreen />
+      )}      
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => (
+  <AuthProvider>
+    <AppContent />
+  </AuthProvider>
+);
+
+export default App;
