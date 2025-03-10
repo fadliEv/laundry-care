@@ -1,38 +1,45 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  articleCard: {
+  card: {
     flexDirection: "row",
     backgroundColor: "#F8F8F7",
     borderRadius: 10,
     overflow: "hidden",
     marginBottom: 10,
+    marginHorizontal: 15,
     padding: 10,
     alignItems: "center",
-    marginHorizontal: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 6,
+    elevation: 5,
   },
-  articleImage: {
-    width: 100,
-    height: 100,
+  image: {
+    width: 90,
+    height: 90,
     borderRadius: 10,
     marginRight: 15,
   },
-  articleContent: {
+  content: {
     flex: 1,
   },
-  articleTitle: {
-    fontSize: 14,
+  title: {
+    fontSize: 16,
     fontWeight: "bold",
+    color: "#333",
     marginBottom: 5,
   },
-  articleDescription: {
+  description: {
     fontSize: 12,
-    color: "gray",
+    color: "#666",
     marginBottom: 5,
   },
-  articleDate: {
-    fontSize: 13,
+  date: {
+    fontSize: 12,
     color: "#FF8C00",
+    fontWeight: "bold",
   },
 });
 
