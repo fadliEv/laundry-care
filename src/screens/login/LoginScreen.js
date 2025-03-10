@@ -75,7 +75,6 @@ const LoginScreen = ({ navigation }) => {
               loading={loading} 
               disabled={!isFormValid}
             />
-
             <View style={styles.registerContainer}>
               <Text style={styles.registerText}>Belum mempunyai akun?</Text>
               <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}><Text style={styles.registerLink}> Daftar</Text></TouchableOpacity>
