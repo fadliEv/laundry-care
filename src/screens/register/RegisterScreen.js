@@ -47,7 +47,7 @@ const RegisterScreen = ({ navigation }) => {
   }, [formData, errors]);
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+    <KeyboardAvoidingView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
           <View style={styles.logoSection}>
