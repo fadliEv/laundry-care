@@ -1,39 +1,32 @@
-import React, { useState } from "react";
-import { View, Text, TouchableOpacity, Button } from "react-native";
-import HomeScreen from "../home/HomeScreen";
-import useAuth from "../../hooks/useAuth";
+import React from "react";
+import { View, ScrollView, Text } from "react-native";
+import styles from "./DashboardScreen.style";
+import { Ionicons } from "@expo/vector-icons";
+import BannerCTA from "./banner/BannerCTA";
+import EventCarousel from "./events/EventCarousel";
+import ArticleList from "./articles/ArticleList";
 
 const DashboardScreen = () => {
-  const { logout } = useAuth();
-  const [activeTab, setActiveTab] = useState("Home");
-
   return (
-    <View style={{ flex: 1 }}>
-      {activeTab === "Home" && <HomeScreen />}
-      {activeTab === "Order" && <Text style={{ textAlign: "center", marginTop: 20 }}>Order Screen</Text>}
-      {activeTab === "Promo" && <Text style={{ textAlign: "center", marginTop: 20 }}>Promo Screen</Text>}
-      {activeTab === "Profile" && <Text style={{ textAlign: "center", marginTop: 20 }}>Profile Screen</Text>}
-
-      {/* Bottom Navigation */}
-      <View style={{ flexDirection: "row", justifyContent: "space-around", padding: 10, backgroundColor: "#f8f8f8", borderTopWidth: 1, borderTopColor: "#ddd" }}>
-        <TouchableOpacity onPress={() => setActiveTab("Home")}>
-          <Text style={activeTab === "Home" ? { fontWeight: "bold" } : {}}>🏠 Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setActiveTab("Order")}>
-          <Text style={activeTab === "Order" ? { fontWeight: "bold" } : {}}>🛒 Order</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setActiveTab("Promo")}>
-          <Text style={activeTab === "Promo" ? { fontWeight: "bold" } : {}}>🎉 Promo</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setActiveTab("Profile")}>
-          <Text style={activeTab === "Profile" ? { fontWeight: "bold" } : {}}>👤 Profile</Text>
-        </TouchableOpacity>
+    <View style={styles.container}>
+      {/* Top Bar */}
+      <View style={styles.topBar}>
+        <Text style={styles.appName}>LaundryCare</Text>
+        <View style={styles.iconContainer}>
+          <Ionicons name="notifications-outline" size={24} color="black" />
+        </View>
       </View>
 
-      {/* Logout Button */}
-      <View style={{ alignItems: "center", marginVertical: 20 }}>
-        <Button title="Logout" color="red" onPress={logout} />
-      </View>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Banner CTA */}
+        <BannerCTA />
+
+        {/* Event Carousel */}
+        <EventCarousel />
+
+        {/* Article List */}
+        <ArticleList />
+      </ScrollView>
     </View>
   );
 };

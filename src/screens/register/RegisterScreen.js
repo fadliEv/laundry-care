@@ -5,6 +5,7 @@ import styles from "./RegisterScreen.style";
 import InputField from "../../shared/components/input/InputField";
 import Button from "../../shared/components/button/Button";
 import { validateRegisterForm } from "./registerValidation";
+import { SCREEN_PATH } from "../../navigation/PathNavigator";
 
 const RegisterScreen = ({ navigation }) => {
   const { register, loading } = useAuth();
@@ -110,7 +111,7 @@ const RegisterScreen = ({ navigation }) => {
 
             <View style={styles.loginContainer}>
               <Text style={styles.loginText}>Sudah punya akun?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate("LoginScreen")}>
+              <TouchableOpacity onPress={() => navigation.navigate(SCREEN_PATH.LOGIN)}>
                 <Text style={styles.loginLink}> Masuk</Text>
               </TouchableOpacity>
             </View>

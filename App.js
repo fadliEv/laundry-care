@@ -1,41 +1,17 @@
-import React, { useState } from "react";
-import { View, Button, ActivityIndicator } from "react-native";
-import useAuth from "./src/hooks/useAuth";
-import DashboardScreen from "./src/screens/dashboard/DashboardScreen";
-import RegisterScreen from "./src/screens/register/RegisterScreen";
-import LoginScreen from "./src/screens/login/LoginScreen";
+import { NavigationContainer } from "@react-navigation/native";
 import { AuthProvider } from "./src/contexts/authContext";
+import { SafeAreaView } from "react-native-safe-area-context";
+import RootNavigator from "./src/navigation/RootNavigator";
 
-const AppContent = () => {
-  const { currentUser, loading } = useAuth();
-  const [isRegistering, setIsRegistering] = useState(false);
 
-  if (loading) {
-    return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="blue" />
-      </View>
-    );
-  }
-
+export default function App() {
   return (
-    <View style={{ flex: 1 }}>
-      {/* {currentUser ? (
-        <DashboardScreen />
-      ) : isRegistering ? (
-        <RegisterScreen onRegister={() => setIsRegistering(false)} />
-      ) : (
-        )}       */}
-        {/* <LoginScreen /> */}
-      <RegisterScreen/>
-    </View>
+      <AuthProvider>
+          <NavigationContainer>
+              <SafeAreaView style={{ flex: 1 }}>
+                  <RootNavigator />                  
+              </SafeAreaView>
+          </NavigationContainer>
+      </AuthProvider>
   );
-};
-
-const App = () => (
-  <AuthProvider>
-    <AppContent />
-  </AuthProvider>
-);
-
-export default App;
+}
