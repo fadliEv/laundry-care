@@ -9,7 +9,10 @@ export const isValidEmail = (email) => {
   };
   
   export const isValidPhoneNumber = (phoneNumber) => {
-    const phoneRegex = /^[0-9]+$/; // Hanya angka
+    const phoneRegex = /^(\+62|62|0)[0-9]{9,12}$/; // Format Indonesia +62 atau 08
     return phoneRegex.test(phoneNumber);
   };
-  
+
+  export const isValidAddress = (address) => {
+    return address.length > 5; // Minimal 5 karakter untuk alamat
+  };
