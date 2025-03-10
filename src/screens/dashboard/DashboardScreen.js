@@ -5,6 +5,8 @@ import { Ionicons } from "@expo/vector-icons";
 import BannerCTA from "./banner/BannerCTA";
 import EventCarousel from "./events/EventCarousel";
 import ArticleList from "./articles/ArticleList";
+import { events } from "../../utils/dummies/events";
+import { articles } from "../../utils/dummies/articles";
 
 const DashboardScreen = () => {
   return (
@@ -22,10 +24,10 @@ const DashboardScreen = () => {
         <BannerCTA />
 
         {/* Event Carousel */}
-        <EventCarousel />
+        <EventCarousel events={events} />
 
         {/* Article List */}
-        <ArticleList />
+        <ArticleList articles={articles}/>
       </ScrollView>
     </View>
   );

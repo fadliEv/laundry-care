@@ -1,9 +1,8 @@
 import React from "react";
 import { View, Text, FlatList, Image } from "react-native";
 import styles from "./EventCarouse.style";
-import { events } from "../../../utils/dummies/events";
 
-const EventCarousel = () => {
+const EventCarousel = ({events}) => {
   return (
     <View>
       <View style={styles.sectionHeader}>

@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     padding: 10,
     alignItems: "center",
+    marginHorizontal : 15
   },
   articleImage: {
     width: 100,
