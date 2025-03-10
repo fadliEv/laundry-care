@@ -26,8 +26,8 @@ const AppContent = () => {
         <RegisterScreen onRegister={() => setIsRegistering(false)} />
       ) : (
         )}       */}
-        <LoginScreen />
-      {/* <RegisterScreen/> */}
+        {/* <LoginScreen /> */}
+      <RegisterScreen/>
     </View>
   );
 };

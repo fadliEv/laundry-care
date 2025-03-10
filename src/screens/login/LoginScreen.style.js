@@ -45,25 +45,6 @@ const styles = StyleSheet.create({
     color: "gray",
     marginBottom: 30,
   },
-  inputContainer: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 10,
-    paddingHorizontal: 15,
-    marginBottom: 10,
-    backgroundColor: "#F8F8F8",
-  },
-  input: {
-    flex: 1,
-    height: 50,
-    fontSize: 16,
-  },
-  eyeIcon: {
-    padding: 10,
-  },
   registerButton: {
     width: "100%",
     backgroundColor: "#FF8C00",
@@ -108,28 +89,7 @@ const styles = StyleSheet.create({
     color: "#FF8C00",
     fontSize: 14,
     marginBottom: 20,
-  },
-
-  loginButton: {
-    width: "90%",
-    backgroundColor: "#FF8C00",
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  loginButtonText: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  errorText: {
-    width: "100%",  
-    textAlign: "left", 
-    color: "red",
-    fontSize: 12, 
-    marginBottom: 10, 
-    paddingLeft: 10, 
-  },
+  }
 });
 
 export default styles;

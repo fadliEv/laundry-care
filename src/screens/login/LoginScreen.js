@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { 
-  View, Text, TextInput, TouchableOpacity, ActivityIndicator, 
-  Image, KeyboardAvoidingView, ScrollView, Platform, TouchableWithoutFeedback, Keyboard 
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, KeyboardAvoidingView, ScrollView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
 import useAuth from "../../hooks/useAuth"; 
-import { Ionicons } from "@expo/vector-icons";
 import styles from "./LoginScreen.style";
+import InputField from "../../shared/components/input/InputField";
+import Button from "../../shared/components/button/Button";
+import { validateLoginForm } from "./loginValidation"; 
 
 const LoginScreen = ({ navigation }) => {
   const { login, loading } = useAuth();
@@ -13,133 +12,73 @@ const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [errors, setErrors] = useState({});
+  const [isFormValid, setIsFormValid] = useState(false);
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailRegex.test(email);
+  const handleChange = (field, value) => {
+    const error = validateLoginForm(field, value);
+    setErrors((prev) => ({ ...prev, [field]: error }));
+
+    if (field === "email") setEmail(value);
+    if (field === "password") setPassword(value);
   };
 
-  const validateField = (field, value) => {
-    let errorMessage = "";
+  useEffect(() => {
+    setIsFormValid(
+      email !== "" &&
+      password !== "" &&
+      Object.values(errors).every((e) => e === "")
+    );
+  }, [email, password, errors]);
 
-    switch (field) {
-      case "email":
-        if (!value) {
-          errorMessage = "Email tidak boleh kosong!";
-        } else if (!isValidEmail(value)) {
-          errorMessage = "Format email tidak valid!";
-        }
-        break;
-      case "password":
-        if (!value) {
-          errorMessage = "Password tidak boleh kosong!";
-        }
-        break;
-      default:
-        break;
-    }
-
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [field]: errorMessage,
-    }));
-  };
-
+  
   const handleLogin = async () => {
-    if (Object.values(errors).some((error) => error !== "")) return;
+    if (!isFormValid) return; 
 
     const success = await login(email, password);
-    if (success) {
-      navigation.navigate("DashboardScreen");
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        password: "Email atau password salah!",
-      }));
-    }
+    if (!success) setErrors((prev) => ({ ...prev, password: "Email atau password salah!" }));
   };
 
   return (
-    <KeyboardAvoidingView 
-      
-      style={styles.container}
-    >
+    <KeyboardAvoidingView style={styles.container} behavior={Platform.OS === "ios" ? "padding" : "height"}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
-          {/* Header Section */}
           <View style={styles.header}>
             <Text style={styles.headerText}>Masuk</Text>
           </View>
-
-          {/* Logo Section */}
           <View style={styles.logoSection}>
-            <Image
-              style={styles.logo}
-              source={require("../../shared/assets/login.png")}
-            />
+            <Image style={styles.logo} source={require("../../shared/assets/login.png")} />
           </View>
 
-          {/* Content Section */}
           <View style={styles.content}>
             <Text style={styles.appTitle}>LaundryCare</Text>
             <Text style={styles.subTitle}>Laundry Super App</Text>
 
-            {/* Input Email */}
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                keyboardType="email-address"
-                value={email}
-                onChangeText={(text) => {
-                  setEmail(text);
-                  validateField("email", text);
-                }}
-              />
-            </View>
-            {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
+            <InputField 
+              placeholder="Email" 
+              keyboardType="email-address" 
+              value={email} 
+              onChangeText={(text) => handleChange("email", text)}  
+              error={errors.email}
+            />
+            <InputField 
+              placeholder="Kata Sandi" 
+              secureTextEntry={secureTextEntry} 
+              value={password} 
+              onChangeText={(text) => handleChange("password", text)}  
+              onToggleSecure={() => setSecureTextEntry(!secureTextEntry)} 
+              error={errors.password} 
+            />
 
-            {/* Input Password */}
-            <View style={styles.inputContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Kata Sandi"
-                secureTextEntry={secureTextEntry}
-                value={password}
-                onChangeText={(text) => {
-                  setPassword(text);
-                  validateField("password", text);
-                }}
-              />
-              <TouchableOpacity
-                style={styles.eyeIcon}
-                onPress={() => setSecureTextEntry(!secureTextEntry)}
-              >
-                <Ionicons name={secureTextEntry ? "eye-off-outline" : "eye-outline"} size={24} color="gray" />
-              </TouchableOpacity>
-            </View>
-            {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
+            <Button 
+              title="Masuk" 
+              onPress={handleLogin} 
+              loading={loading} 
+              disabled={!isFormValid}
+            />
 
-            {/* Lupa Kata Sandi */}
-            <TouchableOpacity>
-              <Text style={styles.forgotPassword}>Lupa Kata Sandi</Text>
-            </TouchableOpacity>
-
-            {/* Button Login */}
-            <TouchableOpacity 
-              style={[styles.loginButton, { opacity: Object.values(errors).some((e) => e !== "") ? 0.5 : 1 }]}
-              onPress={handleLogin}
-              disabled={Object.values(errors).some((e) => e !== "")}
-            >
-              {loading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.loginButtonText}>Masuk</Text>}
-            </TouchableOpacity>
-
-            {/* Link ke Register */}
             <View style={styles.registerContainer}>
               <Text style={styles.registerText}>Belum mempunyai akun?</Text>
-              <TouchableOpacity>
-                <Text style={styles.registerLink}> Daftar</Text>
-              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")}><Text style={styles.registerLink}> Daftar</Text></TouchableOpacity>
             </View>
           </View>
         </ScrollView>
