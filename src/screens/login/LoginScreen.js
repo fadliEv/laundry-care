@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { 
-  View, Text, TextInput, TouchableOpacity, Alert, ActivityIndicator, 
+  View, Text, TextInput, TouchableOpacity, ActivityIndicator, 
   Image, KeyboardAvoidingView, ScrollView, Platform, TouchableWithoutFeedback, Keyboard 
 } from "react-native";
 import useAuth from "../../hooks/useAuth"; 
@@ -12,24 +12,60 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
+  const [errors, setErrors] = useState({});
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  };
+
+  const validateField = (field, value) => {
+    let errorMessage = "";
+
+    switch (field) {
+      case "email":
+        if (!value) {
+          errorMessage = "Email tidak boleh kosong!";
+        } else if (!isValidEmail(value)) {
+          errorMessage = "Format email tidak valid!";
+        }
+        break;
+      case "password":
+        if (!value) {
+          errorMessage = "Password tidak boleh kosong!";
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [field]: errorMessage,
+    }));
+  };
 
   const handleLogin = async () => {
+    if (Object.values(errors).some((error) => error !== "")) return;
+
     const success = await login(email, password);
     if (success) {
-      Alert.alert("Login Berhasil", "Selamat datang di LaundryCare!");
+      navigation.navigate("DashboardScreen");
     } else {
-      Alert.alert("Login Gagal", "Email atau password salah!");
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        password: "Email atau password salah!",
+      }));
     }
   };
 
   return (
     <KeyboardAvoidingView 
-      keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 120}
-      behavior={Platform.OS === "ios" ? "padding" : "height"} 
+      
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={{ flexGrow: 2 }} keyboardShouldPersistTaps="handled" scrollEnabled={true}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
           {/* Header Section */}
           <View style={styles.header}>
             <Text style={styles.headerText}>Masuk</Text>
@@ -52,12 +88,16 @@ const LoginScreen = ({ navigation }) => {
             <View style={styles.inputContainer}>
               <TextInput
                 style={styles.input}
-                placeholder="Nomor Telepon / Email"
+                placeholder="Email"
                 keyboardType="email-address"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  validateField("email", text);
+                }}
               />
             </View>
+            {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
 
             {/* Input Password */}
             <View style={styles.inputContainer}>
@@ -66,7 +106,10 @@ const LoginScreen = ({ navigation }) => {
                 placeholder="Kata Sandi"
                 secureTextEntry={secureTextEntry}
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  validateField("password", text);
+                }}
               />
               <TouchableOpacity
                 style={styles.eyeIcon}
@@ -75,6 +118,7 @@ const LoginScreen = ({ navigation }) => {
                 <Ionicons name={secureTextEntry ? "eye-off-outline" : "eye-outline"} size={24} color="gray" />
               </TouchableOpacity>
             </View>
+            {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
 
             {/* Lupa Kata Sandi */}
             <TouchableOpacity>
@@ -82,13 +126,13 @@ const LoginScreen = ({ navigation }) => {
             </TouchableOpacity>
 
             {/* Button Login */}
-            {loading ? (
-              <ActivityIndicator size="large" color="#FF8C00" />
-            ) : (
-              <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                <Text style={styles.loginButtonText}>Masuk</Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity 
+              style={[styles.loginButton, { opacity: Object.values(errors).some((e) => e !== "") ? 0.5 : 1 }]}
+              onPress={handleLogin}
+              disabled={Object.values(errors).some((e) => e !== "")}
+            >
+              {loading ? <ActivityIndicator size="small" color="#fff" /> : <Text style={styles.loginButtonText}>Masuk</Text>}
+            </TouchableOpacity>
 
             {/* Link ke Register */}
             <View style={styles.registerContainer}>

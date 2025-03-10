@@ -1,8 +1,8 @@
-import User from "../models/UserModel";
+import User from "../models/userModel";
 import { users } from "../utils/dummies/users";
 
 // Simulasi API Request (nanti bisa diganti fetch/axios ke backend)
-const AuthService = {
+const authService = {
   login: async (email, password) => {
     await new Promise((resolve) => setTimeout(resolve, 500)); // Simulasi delay API
 
@@ -24,4 +24,4 @@ const AuthService = {
   },
 };
 
-export default AuthService;
+export default authService;

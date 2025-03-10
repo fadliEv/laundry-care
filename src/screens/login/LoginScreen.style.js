@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 15,
-    marginBottom: 15,
+    marginBottom: 10,
     backgroundColor: "#F8F8F8",
   },
   input: {
@@ -121,6 +121,14 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  errorText: {
+    width: "100%",  
+    textAlign: "left", 
+    color: "red",
+    fontSize: 12, 
+    marginBottom: 10, 
+    paddingLeft: 10, 
   },
 });
 

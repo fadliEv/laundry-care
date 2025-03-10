@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
-import AuthService from "../services/AuthService";
+import authService from "../services/authService";
+
+
 
 
 export const AuthContext = createContext();
@@ -10,7 +12,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     setLoading(true);
-    const user = await AuthService.login(email, password);
+    const user = await authService.login(email, password);
     setLoading(false);
 
     if (user) {
@@ -22,7 +24,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (newUser) => {
     setLoading(true);
-    const user = await AuthService.register(newUser);
+    const user = await authService.register(newUser);
     setLoading(false);
 
     return user ? true : false;
@@ -30,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setLoading(true);
-    await AuthService.logout();
+    await authService.logout();
     setLoading(false);
     setCurrentUser(null);
   };

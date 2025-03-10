@@ -1,7 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-const { width, height } = Dimensions.get("window");
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -50,7 +48,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 10,
     paddingHorizontal: 15,
-    marginBottom: 15,
+    marginBottom: 10,
     backgroundColor: "#F8F8F8",
   },
   input: {
@@ -86,6 +84,14 @@ const styles = StyleSheet.create({
   loginLink: {
     color: "#FF8C00",
     fontWeight: "bold",
+  },
+  errorText: {
+    width: "100%",  
+    textAlign: "left", 
+    color: "red",
+    fontSize: 12, 
+    marginBottom: 10, 
+    paddingLeft: 10, 
   },
 });
 
