@@ -5,6 +5,7 @@ import DashboardStackNavigator from "./stacks/DashboardStackNavigator";
 import OrderStackNavigator from "./stacks/OrderStackNavigator";
 import PromoScreen from "../screens/promo/PromoScreen";
 import ProfileStackNavigator from "./stacks/ProfileStackNavigator";
+import OnFixingScreen from "../screens/commons/OnFixingScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ const TabNavigator = () => {
         >
             <Tab.Screen name={TAB_PATH.DASHBOARD} component={DashboardStackNavigator} options={{headerShown : false}} />
             <Tab.Screen name={TAB_PATH.ORDER} component={OrderStackNavigator} options={{headerShown : false}} />
-            <Tab.Screen name={TAB_PATH.PROMO} component={PromoScreen} options={{headerShown : false}} />
+            <Tab.Screen name={TAB_PATH.PROMO} component={OnFixingScreen} options={{headerShown : false}} />
             <Tab.Screen name={TAB_PATH.PROFILE} component={ProfileStackNavigator} options={{headerShown : false}} />
         </Tab.Navigator>
     );

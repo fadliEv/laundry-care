@@ -7,20 +7,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  header: {
-    backgroundColor: "#FF8C00",
-    height: height * 0.18, // Tambah sedikit tinggi agar lebih elegan
-    justifyContent: "center",
-    alignItems: "center",
-    borderBottomLeftRadius: 80, // Radius lebih besar agar terlihat smooth
-    borderBottomRightRadius: 80, // Sama seperti kiri
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    elevation: 8, // Efek bayangan untuk Android
-    paddingTop: Platform.OS === "ios" ? 40 : 20, // Menyesuaikan status bar
-  },
   headerText: {
     color: "#fff",
     fontSize: 24,
