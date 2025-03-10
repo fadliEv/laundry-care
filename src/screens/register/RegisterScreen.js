@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, KeyboardAvoidingView, ScrollView, Platform, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from "react-native";
+import { View, Image, KeyboardAvoidingView, ScrollView, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
 import useAuth from "../../hooks/useAuth"; 
-import styles from "./RegisterScreen.style";
-import InputField from "../../shared/components/input/InputField";
-import Button from "../../shared/components/button/Button";
-import { validateRegisterForm } from "./registerValidation";
-import { SCREEN_PATH } from "../../navigation/PathNavigator";
+import styles from "./style/RegisterScreen.style";
+import RegisterForm from "./RegisterForm";
+import { validateRegisterForm } from "./registerValidation"; 
 
 const RegisterScreen = ({ navigation }) => {
   const { register, loading } = useAuth();
@@ -19,8 +17,6 @@ const RegisterScreen = ({ navigation }) => {
     confirmPassword: "",
   });
 
-  const [secureTextEntry, setSecureTextEntry] = useState(true);
-  const [secureConfirmTextEntry, setSecureConfirmTextEntry] = useState(true);
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
 
@@ -31,6 +27,13 @@ const RegisterScreen = ({ navigation }) => {
     setErrors((prev) => ({ ...prev, [field]: error }));
   };
 
+  useEffect(() => {
+    setIsFormValid(
+      Object.values(formData).every((value) => value !== "") &&
+      Object.values(errors).every((e) => e === "")
+    );
+  }, [formData, errors]);
+
   const handleRegister = async () => {
     if (!isFormValid) return;
 
@@ -39,13 +42,6 @@ const RegisterScreen = ({ navigation }) => {
       navigation.navigate("LoginScreen");
     }
   };
-
-  useEffect(() => {
-    setIsFormValid(
-      Object.values(formData).every((value) => value !== "") &&
-      Object.values(errors).every((e) => e === "")
-    );
-  }, [formData, errors]);
 
   return (
     <KeyboardAvoidingView 
@@ -59,67 +55,15 @@ const RegisterScreen = ({ navigation }) => {
             <Image style={styles.logo} source={require("../../shared/assets/registration.png")} />
           </View>
 
-          <View style={styles.content}>
-            <Text style={styles.appTitle}>LaundryCare</Text>
-            <Text style={styles.subTitle}>Buat Akun Baru</Text>
-
-            <InputField 
-              placeholder="Nama Lengkap"
-              value={formData.name} 
-              onChangeText={(text) => handleChange("name", text)} 
-              error={errors.name}
-            />
-            <InputField 
-              placeholder="Nomor Telepon"
-              keyboardType="phone-pad"
-              value={formData.phoneNumber} 
-              onChangeText={(text) => handleChange("phoneNumber", text)} 
-              error={errors.phoneNumber}
-            />
-            <InputField 
-              placeholder="Email"
-              keyboardType="email-address"
-              value={formData.email} 
-              onChangeText={(text) => handleChange("email", text)} 
-              error={errors.email}
-            />
-            <InputField 
-              placeholder="Alamat"
-              value={formData.address} 
-              onChangeText={(text) => handleChange("address", text)} 
-              error={errors.address}
-            />
-            <InputField 
-              placeholder="Kata Sandi"
-              secureTextEntry={secureTextEntry} 
-              value={formData.password} 
-              onChangeText={(text) => handleChange("password", text)} 
-              onToggleSecure={() => setSecureTextEntry(!secureTextEntry)} 
-              error={errors.password}
-            />
-            <InputField 
-              placeholder="Konfirmasi Kata Sandi"
-              secureTextEntry={secureConfirmTextEntry} 
-              value={formData.confirmPassword} 
-              onChangeText={(text) => handleChange("confirmPassword", text)} 
-              onToggleSecure={() => setSecureConfirmTextEntry(!secureConfirmTextEntry)} 
-              error={errors.confirmPassword}
-            />
-
-            <Button 
-              title="Daftar" 
-              onPress={handleRegister} 
-              loading={loading} 
-              disabled={!isFormValid} 
-            />
-
-            <View style={styles.loginContainer}>
-              <Text style={styles.loginText}>Sudah punya akun?</Text>
-              <TouchableOpacity onPress={() => navigation.navigate(SCREEN_PATH.LOGIN)}>
-                <Text style={styles.loginLink}> Masuk</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <RegisterForm 
+            formData={formData} 
+            errors={errors} 
+            onChange={handleChange} 
+            onRegister={handleRegister} 
+            isFormValid={isFormValid} 
+            loading={loading} 
+            navigation={navigation} 
+          />
         </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
