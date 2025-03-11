@@ -59,7 +59,24 @@ const OrderScreen = ({ navigation }) => {
       total: calculateTotal(),
     };
 
-    navigation.navigate(SCREEN_PATH.ORDER_SUMMARY, { orderDetails });
+    Alert.alert(
+        "Konfirmasi Pesanan",
+        "Apakah Anda yakin ingin memesan layanan ini?",
+        [
+          {
+            text: "Batal",
+            style: "cancel",
+          },
+          {
+            text: "Ya",
+            onPress: () => {              
+              navigation.navigate(SCREEN_PATH.ORDER_SUMMARY,{orderDetails});
+            },
+          },
+        ]
+      );
+
+    // navigation.navigate(SCREEN_PATH.ORDER_SUMMARY, { orderDetails });
   };
 
   return (
