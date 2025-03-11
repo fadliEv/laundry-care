@@ -57,15 +57,26 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     borderRadius: 8,
   },
+  serviceInfo: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
   serviceText: {
     fontSize: 16,
-    flex: 1,
     fontWeight: "bold",
+    marginLeft: 10,
+  },
+  serviceDescription: {
+    fontSize: 14,
+    color: "#777",
     marginLeft: 10,
   },
   serviceQuantity: {
     fontSize: 16,
     color: "#555",
+    width: 30,
+    textAlign: "center",
   },
   servicePrice: {
     fontSize: 16,
@@ -89,6 +100,19 @@ const styles = StyleSheet.create({
     color: "#FF8C00",
     fontWeight: "bold",
     marginTop: 5,
+  },
+  additionalInfo: {
+    flexDirection: "row",
+    backgroundColor: "#FFF7E6",
+    padding: 15,
+    borderRadius: 10,
+    marginTop: 20,
+    alignItems: "center",
+  },
+  additionalText: {
+    fontSize: 14,
+    color: "#555",
+    marginLeft: 10,
   },
   homeButton: {
     flexDirection: "row",

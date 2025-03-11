@@ -20,22 +20,32 @@ const OrderSummaryScreen = ({ route, navigation }) => {
       <View style={styles.header}>
         <Ionicons name="checkmark-circle" size={50} color="#28a745" />
         <Text style={styles.headerText}>Pesanan Berhasil!</Text>
-        <Text style={styles.subHeaderText}>Pesanan Anda telah diterima dan sedang diproses.</Text>
+        <Text style={styles.subHeaderText}>
+          Pesanan Anda telah diterima dan sedang diproses.
+        </Text>
       </View>
 
       {/* Informasi Order */}
       <View style={styles.infoContainer}>
         <View style={styles.infoRow}>
           <Ionicons name="person-outline" size={20} color="#FF8C00" />
-          <Text style={styles.infoText}>Atas Nama: <Text style={styles.boldText}>{orderDetails.user}</Text></Text>
+          <Text style={styles.infoText}>
+            Atas Nama: <Text style={styles.boldText}>{orderDetails.user}</Text>
+          </Text>
         </View>
         <View style={styles.infoRow}>
           <Ionicons name="calendar-outline" size={20} color="#FF8C00" />
-          <Text style={styles.infoText}>Tanggal Order: <Text style={styles.boldText}>{orderDetails.orderDate}</Text></Text>
+          <Text style={styles.infoText}>
+            Tanggal Order:{" "}
+            <Text style={styles.boldText}>{orderDetails.orderDate}</Text>
+          </Text>
         </View>
         <View style={styles.infoRow}>
           <Ionicons name="time-outline" size={20} color="#FF8C00" />
-          <Text style={styles.infoText}>Perkiraan Selesai: <Text style={styles.boldText}>{orderDetails.deliveryDate}</Text></Text>
+          <Text style={styles.infoText}>
+            Perkiraan Selesai:{" "}
+            <Text style={styles.boldText}>{orderDetails.deliveryDate}</Text>
+          </Text>
         </View>
       </View>
 
@@ -46,10 +56,19 @@ const OrderSummaryScreen = ({ route, navigation }) => {
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
           <View style={styles.serviceItem}>
-            <Ionicons name="shirt-outline" size={22} color="#555" />
-            <Text style={styles.serviceText}>{item.name}</Text>
+            <View style={styles.serviceInfo}>
+              <Ionicons name="shirt-outline" size={22} color="#555" />
+              <View>
+                <Text style={styles.serviceText}>{item.name}</Text>
+                <Text style={styles.serviceDescription}>
+                  {item.description}
+                </Text>
+              </View>
+            </View>
             <Text style={styles.serviceQuantity}>{item.quantity}x</Text>
-            <Text style={styles.servicePrice}>Rp {item.price.toLocaleString()}</Text>
+            <Text style={styles.servicePrice}>
+              Rp {item.price.toLocaleString()}
+            </Text>
           </View>
         )}
       />
@@ -57,7 +76,18 @@ const OrderSummaryScreen = ({ route, navigation }) => {
       {/* Total Harga */}
       <View style={styles.totalContainer}>
         <Text style={styles.totalText}>Total Pembayaran</Text>
-        <Text style={styles.totalPrice}>Rp {orderDetails.total.toLocaleString()}</Text>
+        <Text style={styles.totalPrice}>
+          Rp {orderDetails.total.toLocaleString()}
+        </Text>
+      </View>
+
+      {/* Informasi Tambahan */}
+      <View style={styles.additionalInfo}>
+        <Ionicons name="information-circle-outline" size={20} color="#FF8C00" />
+        <Text style={styles.additionalText}>
+          Pesanan Anda sedang dalam proses pencucian. Kami akan menghubungi
+          Anda jika ada informasi lebih lanjut.
+        </Text>
       </View>
 
       {/* Tombol Kembali ke Beranda */}
