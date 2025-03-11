@@ -70,6 +70,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
+  homeButton: {
+    backgroundColor: "#FF8C00",
+    paddingVertical: 15,
+    alignItems: "center",
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  homeButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
 
 export default styles;

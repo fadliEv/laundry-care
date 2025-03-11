@@ -1,9 +1,18 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import styles from "./OrderSummaryScreen.style";
+import { SCREEN_PATH } from "../../navigation/PathNavigator";
+
 
 const OrderSummaryScreen = ({ route, navigation }) => {
   const { orderDetails } = route.params;
+
+  const handleGoHome = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: SCREEN_PATH.DASHBOARD }],
+    });
+  };
 
   return (
     <View style={styles.container}>
@@ -25,6 +34,9 @@ const OrderSummaryScreen = ({ route, navigation }) => {
       />
 
       <Text style={styles.totalText}>Total: Rp {orderDetails.total.toLocaleString()}</Text>
+      <TouchableOpacity style={styles.homeButton} onPress={handleGoHome}>
+        <Text style={styles.homeButtonText}>Kembali ke Beranda</Text>
+      </TouchableOpacity>
     </View>
   );
 };
