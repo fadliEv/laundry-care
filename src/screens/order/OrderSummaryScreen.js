@@ -1,8 +1,8 @@
 import React from "react";
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
-import styles from "./OrderSummaryScreen.style";
+import { Ionicons } from "@expo/vector-icons";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
-
+import styles from "./OrderSummaryScreen.style";
 
 const OrderSummaryScreen = ({ route, navigation }) => {
   const { orderDetails } = route.params;
@@ -16,25 +16,53 @@ const OrderSummaryScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Pesanan Anda</Text>
-      <Text>Atas Nama: {orderDetails.user}</Text>
-      <Text>Tanggal Order: {orderDetails.orderDate}</Text>
-      <Text>Tanggal Antar: {orderDetails.deliveryDate}</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <Ionicons name="checkmark-circle" size={50} color="#28a745" />
+        <Text style={styles.headerText}>Pesanan Berhasil!</Text>
+        <Text style={styles.subHeaderText}>Pesanan Anda telah diterima dan sedang diproses.</Text>
+      </View>
 
+      {/* Informasi Order */}
+      <View style={styles.infoContainer}>
+        <View style={styles.infoRow}>
+          <Ionicons name="person-outline" size={20} color="#FF8C00" />
+          <Text style={styles.infoText}>Atas Nama: <Text style={styles.boldText}>{orderDetails.user}</Text></Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Ionicons name="calendar-outline" size={20} color="#FF8C00" />
+          <Text style={styles.infoText}>Tanggal Order: <Text style={styles.boldText}>{orderDetails.orderDate}</Text></Text>
+        </View>
+        <View style={styles.infoRow}>
+          <Ionicons name="time-outline" size={20} color="#FF8C00" />
+          <Text style={styles.infoText}>Perkiraan Selesai: <Text style={styles.boldText}>{orderDetails.deliveryDate}</Text></Text>
+        </View>
+      </View>
+
+      {/* Daftar Layanan */}
+      <Text style={styles.sectionTitle}>Detail Layanan</Text>
       <FlatList
         data={orderDetails.services}
         keyExtractor={(item) => item.name}
         renderItem={({ item }) => (
           <View style={styles.serviceItem}>
-            <Text>{item.name}</Text>
-            <Text>{item.quantity}x</Text>
-            <Text>Rp {item.price.toLocaleString()}</Text>
+            <Ionicons name="shirt-outline" size={22} color="#555" />
+            <Text style={styles.serviceText}>{item.name}</Text>
+            <Text style={styles.serviceQuantity}>{item.quantity}x</Text>
+            <Text style={styles.servicePrice}>Rp {item.price.toLocaleString()}</Text>
           </View>
         )}
       />
 
-      <Text style={styles.totalText}>Total: Rp {orderDetails.total.toLocaleString()}</Text>
+      {/* Total Harga */}
+      <View style={styles.totalContainer}>
+        <Text style={styles.totalText}>Total Pembayaran</Text>
+        <Text style={styles.totalPrice}>Rp {orderDetails.total.toLocaleString()}</Text>
+      </View>
+
+      {/* Tombol Kembali ke Beranda */}
       <TouchableOpacity style={styles.homeButton} onPress={handleGoHome}>
+        <Ionicons name="home-outline" size={22} color="white" />
         <Text style={styles.homeButtonText}>Kembali ke Beranda</Text>
       </TouchableOpacity>
     </View>
