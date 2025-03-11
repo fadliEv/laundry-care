@@ -2,7 +2,7 @@ import axios from "axios";
 import localStorage from "../utils/localStorage";
 
 const client = axios.create({
-  baseURL: "http://10.10.103.78:8085", // Sesuaikan ip device dan port backend
+  baseURL: "http://192.168.1.19:8085", // Sesuaikan ip device dan port backend
 });
 
 // Interceptor untuk menambahkan token ke setiap request

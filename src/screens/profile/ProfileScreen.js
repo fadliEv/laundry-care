@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
@@ -6,30 +6,41 @@ import styles from "./ProfileScreen.style";
 import authService from "../../services/authService";
 import { Alert } from "react-native";
 import localStorage from "../../utils/localStorage";
+import { useAuth } from "../../context/authContext";
+import ConfirmationModal from "../../shared/components/confirmation/ConfirmationModal";
 
 const ProfileScreen = ({ navigation }) => {  
+  const {logout} = useAuth()
+  const [isModalVisible, setModalVisible] = useState(false);
 
+  // const handleLogout = async () => {
+  //   Alert.alert(
+  //     "Konfirmasi Logout",
+  //     "Apakah Anda yakin ingin keluar?",
+  //     [
+  //       { text: "Batal", style: "cancel" },
+  //       {
+  //         text: "Ya",
+  //         onPress: async () => {
+  //           try {
+  //             await logout();              
+  //           } catch (error) {
+  //             Alert.alert("Terjadi Kesalahan", `Gagal logout: ${error}`);
+  //           }
+  //         },
+  //       },
+  //     ]
+  //   );
+  // };
 
   const handleLogout = async () => {
-    Alert.alert(
-      "Konfirmasi Logout",
-      "Apakah Anda yakin ingin keluar?",
-      [
-        { text: "Batal", style: "cancel" },
-        {
-          text: "Ya",
-          onPress: async () => {
-            try {
-              await authService.logout();              
-            } catch (error) {
-              Alert.alert("Terjadi Kesalahan", `Gagal logout: ${error}`);
-            }
-          },
-        },
-      ]
-    );
+    setModalVisible(false);
+    try {
+      await logout();
+    } catch (error) {
+      Alert.alert("Terjadi Kesalahan", `Gagal logout: ${error}`);
+    }
   };
-
 
   return (
     <View style={styles.container}>
@@ -73,9 +84,17 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       {/* Logout Button */}
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+      <TouchableOpacity style={styles.logoutButton} onPress={() => setModalVisible(true)}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
+
+      <ConfirmationModal
+        visible={isModalVisible}
+        title="Konfirmasi Logout"
+        message="Apakah Anda yakin ingin keluar?"
+        onConfirm={handleLogout}
+        onCancel={() => setModalVisible(false)}
+      />
     </View>
   );
 };

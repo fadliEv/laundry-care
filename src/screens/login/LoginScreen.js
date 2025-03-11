@@ -6,9 +6,11 @@ import { validateLoginForm } from "./loginValidation";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
 import authService from "../../services/authService";
 import localStorage from "../../utils/localStorage";
+import { useAuth } from "../../context/authContext";
 
 
 const LoginScreen = ({ navigation }) => {  
+  const {login,loading} = useAuth()
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -44,12 +46,9 @@ const LoginScreen = ({ navigation }) => {
       Alert.alert("Login Gagal", "Silakan isi username dan password dengan benar!");
       return;
     }
-    try {      
-      const response = await authService.login(formData.username, formData.password);      
-      await localStorage.setData("token", response);      
-      Alert.alert("Login Berhasil", "Harusnya redirect ya");
-    } catch (error) {
-      Alert.alert("Login Gagal", `Username atau password salah!${error}`);
+    const isSuccess = await login(formData.username, formData.password)
+    if (!isSuccess){
+      Alert.alert("Login Gagal", "Username atau password salah!")
     }
   };
 
