@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, KeyboardAvoidingView, ScrollView, Platform, TouchableWithoutFeedback, Keyboard, Text } from "react-native";
-import useAuth from "../../hooks/useAuth"; 
+import { View, Image, KeyboardAvoidingView, ScrollView, Platform, TouchableWithoutFeedback, Keyboard, Text, Alert } from "react-native";
 import styles from "./style/LoginScreen.style";
 import LoginForm from "./LoginForm";
 import { validateLoginForm } from "./loginValidation"; 
+import { SCREEN_PATH } from "../../navigation/PathNavigator";
+import authService from "../../services/authService";
+import localStorage from "../../utils/localStorage";
 
-const LoginScreen = ({ navigation }) => {
-  const { login, loading } = useAuth();
+
+const LoginScreen = ({ navigation }) => {  
   const [formData, setFormData] = useState({
-    email: "",
+    username: "",
     password: "",
   });
   const [secureTextEntry, setSecureTextEntry] = useState(true);
@@ -24,17 +26,31 @@ const LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     setIsFormValid(
-      formData.email !== "" &&
+      formData.username !== "" &&
       formData.password !== "" &&
       Object.values(errors).every((e) => e === "")
     );
   }, [formData, errors]);
 
-  const handleLogin = async () => {
-    if (!isFormValid) return; 
+  // const handleLogin = async () => {
+  //   if (!isFormValid) return; 
 
-    const success = await login(formData.email, formData.password);
-    if (!success) setErrors((prev) => ({ ...prev, password: "Email atau password salah!" }));
+  //   // memanggil service...
+  //   if (!success) setErrors((prev) => ({ ...prev, password: "Email atau password salah!" }));
+  // };
+
+  const handleLogin = async () => {
+    if (!isFormValid) {
+      Alert.alert("Login Gagal", "Silakan isi username dan password dengan benar!");
+      return;
+    }
+    try {      
+      const response = await authService.login(formData.username, formData.password);      
+      await localStorage.setData("token", response);      
+      Alert.alert("Login Berhasil", "Harusnya redirect ya");
+    } catch (error) {
+      Alert.alert("Login Gagal", `Username atau password salah!${error}`);
+    }
   };
 
   return (
@@ -60,7 +76,6 @@ const LoginScreen = ({ navigation }) => {
             onChange={handleChange}
             onLogin={handleLogin}
             isFormValid={isFormValid}
-            loading={loading}
             navigation={navigation}
           />
         </ScrollView>

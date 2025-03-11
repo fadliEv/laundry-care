@@ -12,11 +12,10 @@ const LoginForm = ({ formData, errors, secureTextEntry, onToggleSecure, onChange
       <Text style={styles.subTitle}>Laundry Super App</Text>
 
       <InputField 
-        placeholder="Email" 
-        keyboardType="email-address" 
-        value={formData.email} 
-        onChangeText={(text) => onChange("email", text)}  
-        error={errors.email}
+        placeholder="username"         
+        value={formData.username} 
+        onChangeText={(text) => onChange("username", text)}  
+        error={errors.username}
       />
       <InputField 
         placeholder="Kata Sandi" 

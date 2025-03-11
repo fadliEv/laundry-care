@@ -1,26 +1,31 @@
-import User from "../models/userModel";
-import { users } from "../utils/dummies/users";
+import localStorage from "../utils/localStorage";
+import apiClient from "./apiClient";
 
-// Simulasi API Request (nanti bisa diganti fetch/axios ke backend)
 const authService = {
-  login: async (email, password) => {
-    await new Promise((resolve) => setTimeout(resolve, 500)); // Simulasi delay API
+  login: async (username, password) => {
+    try {
+      const response = await apiClient({
+        method: "post",
+        url: "/auth/login",
+        params: { username, password },
+      });
 
-    const userData = users.find((user) => user.email === email && user.password === password);
-    return userData ? User.fromJson(userData) : null;
-  },
-
-  register: async (newUser) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    const createdUser = { id: users.length + 1, ...newUser };
-    users.push(User.fromJson(createdUser));
-    return createdUser;
+      if (response.token) {
+        await localStorage.setData("token", response.token);        
+        return response.token;
+      }                  
+    } catch (error) {
+      console.error("Login Error:", error);
+      throw error;
+    }
   },
 
   logout: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    return true;
+    await localStorage.removeData("token");    
+  },
+
+  getCurrentUser: async () => {
+    return await localStorage.getData("user");
   },
 };
 

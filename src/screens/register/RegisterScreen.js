@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { View, Image, KeyboardAvoidingView, ScrollView, Platform, TouchableWithoutFeedback, Keyboard } from "react-native";
-import useAuth from "../../hooks/useAuth"; 
 import styles from "./style/RegisterScreen.style";
 import RegisterForm from "./RegisterForm";
 import { validateRegisterForm } from "./registerValidation"; 
 
 const RegisterScreen = ({ navigation }) => {
-  const { register, loading } = useAuth();
 
   const [formData, setFormData] = useState({
     name: "",

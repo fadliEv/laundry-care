@@ -2,11 +2,34 @@ import React from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
-import useAuth from "../../hooks/useAuth";
 import styles from "./ProfileScreen.style";
+import authService from "../../services/authService";
+import { Alert } from "react-native";
+import localStorage from "../../utils/localStorage";
 
-const ProfileScreen = ({ navigation }) => {
-  const { logout } = useAuth();
+const ProfileScreen = ({ navigation }) => {  
+
+
+  const handleLogout = async () => {
+    Alert.alert(
+      "Konfirmasi Logout",
+      "Apakah Anda yakin ingin keluar?",
+      [
+        { text: "Batal", style: "cancel" },
+        {
+          text: "Ya",
+          onPress: async () => {
+            try {
+              await authService.logout();              
+            } catch (error) {
+              Alert.alert("Terjadi Kesalahan", `Gagal logout: ${error}`);
+            }
+          },
+        },
+      ]
+    );
+  };
+
 
   return (
     <View style={styles.container}>
@@ -50,7 +73,7 @@ const ProfileScreen = ({ navigation }) => {
       </View>
 
       {/* Logout Button */}
-      <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
     </View>
