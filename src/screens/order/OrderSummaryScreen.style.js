@@ -9,31 +9,26 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 15,
+    textAlign: "center",
   },
-  dropdown: {
+  infoContainer: {
+    backgroundColor: "#F8F8F8",
+    padding: 15,
+    borderRadius: 8,
     marginBottom: 20,
   },
-  addButton: {
-    backgroundColor: "#FF8C00",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 10,
-    justifyContent: "center",
-    borderRadius: 8,
-    marginBottom: 15,
-  },
-  addButtonText: {
-    color: "#fff",
+  infoText: {
     fontSize: 16,
-    marginLeft: 10,
+    marginBottom: 5,
+    color: "#333",
   },
   serviceItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "#F8F8F8",
-    padding: 15,
+    backgroundColor: "#FFF7E6",
+    padding: 12,
     marginVertical: 5,
     borderRadius: 8,
   },
@@ -41,37 +36,36 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
   },
-  servicePrice: {
-    fontSize: 14,
-    color: "gray",
-  },
-  quantity: {
+  serviceQuantity: {
     fontSize: 16,
-    fontWeight: "bold",
+    color: "#555",
   },
-  totalContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginVertical: 10,
-    borderTopWidth: 1,
-    paddingTop: 10,
-  },
-  totalText: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  totalPrice: {
-    fontSize: 18,
+  servicePrice: {
+    fontSize: 16,
     color: "#FF8C00",
     fontWeight: "bold",
   },
-  orderButton: {
+  totalContainer: {
+    marginTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: "#ddd",
+    paddingTop: 10,
+  },
+  totalText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#FF8C00",
+    marginTop: 10,
+  },
+  confirmButton: {
     backgroundColor: "#FF8C00",
     paddingVertical: 15,
     alignItems: "center",
     borderRadius: 8,
+    marginTop: 20,
   },
-  orderButtonText: {
+  confirmButtonText: {
     color: "#fff",
     fontSize: 18,
     fontWeight: "bold",
