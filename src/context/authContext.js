@@ -1,24 +1,29 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import localStorage from "../utils/localStorage";
 import authService from "../services/authService";
+import { useDispatch } from "react-redux";
+import { startLoading, stopLoading } from "../store/slice/appSlice";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
-    const [currentUser, setCurrentUser] = useState(null)
-    const [loading,setLoading] = useState(false)
+    const [currentUser, setCurrentUser] = useState(null)    
+    const dispatch = useDispatch()
 
     const checkAuth = async () => {
-        setLoading(true)
+        dispatch(startLoading())
         try {        
-            const token = await localStorage.getData('token')
-            if (token) {            
-                setCurrentUser(token)
+            const token = await authService.getCurrentUser()
+            const user = jwtDecode(token)
+            console.log('USERNYA : ',user);            
+            if (user) {            
+                setCurrentUser(user)
             }
         } catch (error) {
             throw error;            
         }finally {
-            setLoading(false)
+            dispatch(stopLoading())
         }
     }
     
@@ -27,20 +32,21 @@ export const AuthProvider = ({children}) => {
     },[])
 
     const login = async (username,password) => {
-        setLoading(true)
+        dispatch(startLoading())
         try {
-            const token = await authService.login(username,password)            
-            setCurrentUser(token)
+            const token = await authService.login(username,password)      
+            const user = jwtDecode(token)      
+            if (user) setCurrentUser(user)
             return true
         } catch (error) {
             throw error            
         }finally{
-            setLoading(false)
+            dispatch(stopLoading())
         }
     }
 
     const logout = async () => {
-        setLoading(true)
+        dispatch(startLoading())
         try {
             await authService.logout()            
             setCurrentUser(null)
@@ -48,12 +54,12 @@ export const AuthProvider = ({children}) => {
         } catch (error) {
             throw error            
         }finally{
-            setLoading(false)
+            dispatch(stopLoading())
         }
     }
 
     return (
-        <AuthContext.Provider value={{currentUser,login,logout,loading}}>
+        <AuthContext.Provider value={{currentUser,login,logout}}>
             {children}
         </AuthContext.Provider>
     )

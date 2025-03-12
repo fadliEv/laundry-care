@@ -44,8 +44,8 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <KeyboardAvoidingView 
       style={styles.container} 
-      behavior={Platform.OS === "ios" ? "padding" : "height"} 
-      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 70} 
+      // behavior={Platform.OS === "ios" ? "padding" : "height"} 
+      // keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 70} 
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
@@ -58,8 +58,7 @@ const RegisterScreen = ({ navigation }) => {
             errors={errors} 
             onChange={handleChange} 
             onRegister={handleRegister} 
-            isFormValid={isFormValid} 
-            loading={loading} 
+            isFormValid={isFormValid}             
             navigation={navigation} 
           />
         </ScrollView>

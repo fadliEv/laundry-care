@@ -5,7 +5,7 @@ import InputField from "../../shared/components/input/InputField";
 import Button from "../../shared/components/button/Button";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
 
-const LoginForm = ({ formData, errors, secureTextEntry, onToggleSecure, onChange, onLogin, isFormValid, loading, navigation }) => {
+const LoginForm = ({ formData, errors, secureTextEntry, onToggleSecure, onChange, onLogin, isFormValid, navigation }) => {
   return (
     <View style={styles.formContainer}>
       <Text style={styles.appTitle}>LaundryCare</Text>
@@ -28,8 +28,7 @@ const LoginForm = ({ formData, errors, secureTextEntry, onToggleSecure, onChange
 
       <Button 
         title="Masuk" 
-        onPress={onLogin} 
-        loading={loading} 
+        onPress={onLogin}         
         disabled={!isFormValid}
       />
 

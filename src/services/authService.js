@@ -25,7 +25,7 @@ const authService = {
   },
 
   getCurrentUser: async () => {
-    return await localStorage.getData("user");
+    return await localStorage.getData("token");
   },
 };
 

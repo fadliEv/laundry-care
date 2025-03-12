@@ -1,21 +1,25 @@
-import React from "react";
-import { View, Text, FlatList, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
 import styles from "./OrderSummaryScreen.style";
 
 const OrderSummaryScreen = ({ route, navigation }) => {
-  const { orderDetails } = route.params;
+  const { orderResponse } = route.params;
+
+  useEffect(() => {
+    console.log("Order Response : ", orderResponse);
+  }, []);
 
   const handleGoHome = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: SCREEN_PATH.DASHBOARD }],
+      routes: [{ name: SCREEN_PATH.MAIN_APP }],
     });
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Ionicons name="checkmark-circle" size={50} color="#28a745" />
@@ -30,63 +34,50 @@ const OrderSummaryScreen = ({ route, navigation }) => {
         <View style={styles.infoRow}>
           <Ionicons name="person-outline" size={20} color="#FF8C00" />
           <Text style={styles.infoText}>
-            Atas Nama: <Text style={styles.boldText}>{orderDetails.user}</Text>
+            Atas Nama: <Text style={styles.boldText}>{orderResponse.customer?.name || "N/A"}</Text>
           </Text>
         </View>
         <View style={styles.infoRow}>
           <Ionicons name="calendar-outline" size={20} color="#FF8C00" />
           <Text style={styles.infoText}>
-            Tanggal Order:{" "}
-            <Text style={styles.boldText}>{orderDetails.orderDate}</Text>
+            Tanggal Order: <Text style={styles.boldText}>{orderResponse.createdAt}</Text>
           </Text>
         </View>
         <View style={styles.infoRow}>
           <Ionicons name="time-outline" size={20} color="#FF8C00" />
           <Text style={styles.infoText}>
-            Perkiraan Selesai:{" "}
-            <Text style={styles.boldText}>{orderDetails.deliveryDate}</Text>
+            Perkiraan Selesai: <Text style={styles.boldText}>{orderResponse.pickupDate}</Text>
           </Text>
         </View>
       </View>
 
-      {/* Daftar Layanan */}
+      {/* Detail Layanan */}
       <Text style={styles.sectionTitle}>Detail Layanan</Text>
-      <FlatList
-        data={orderDetails.services}
-        keyExtractor={(item) => item.name}
-        renderItem={({ item }) => (
-          <View style={styles.serviceItem}>
-            <View style={styles.serviceInfo}>
-              <Ionicons name="shirt-outline" size={22} color="#555" />
-              <View>
-                <Text style={styles.serviceText}>{item.name}</Text>
-                <Text style={styles.serviceDescription}>
-                  {item.description}
-                </Text>
-              </View>
-            </View>
-            <Text style={styles.serviceQuantity}>{item.quantity}x</Text>
-            <Text style={styles.servicePrice}>
-              Rp {item.price.toLocaleString()}
-            </Text>
+      {orderResponse.details.map((item, index) => (
+        <View key={index} style={styles.serviceCard}>
+          <View style={styles.serviceHeader}>
+            <Ionicons name="shirt-outline" size={24} color="#FF8C00" />
+            <Text style={styles.serviceTitle}>{item.product.name}</Text>
           </View>
-        )}
-      />
+          <Text style={styles.serviceDescription}>{item.product.description}</Text>
+          <View style={styles.serviceFooter}>
+            <Text style={styles.serviceQuantity}>Qty: {item.qty}</Text>
+            <Text style={styles.servicePrice}>Rp {item.subTotal.toLocaleString()}</Text>
+          </View>
+        </View>
+      ))}
 
       {/* Total Harga */}
       <View style={styles.totalContainer}>
         <Text style={styles.totalText}>Total Pembayaran</Text>
-        <Text style={styles.totalPrice}>
-          Rp {orderDetails.total.toLocaleString()}
-        </Text>
+        <Text style={styles.totalPrice}>Rp {orderResponse.total.toLocaleString()}</Text>
       </View>
 
       {/* Informasi Tambahan */}
       <View style={styles.additionalInfo}>
         <Ionicons name="information-circle-outline" size={20} color="#FF8C00" />
         <Text style={styles.additionalText}>
-          Pesanan Anda sedang dalam proses pencucian. Kami akan menghubungi
-          Anda jika ada informasi lebih lanjut.
+          Pesanan Anda sedang dalam proses pencucian. Kami akan menghubungi Anda jika ada informasi lebih lanjut.
         </Text>
       </View>
 
@@ -95,7 +86,7 @@ const OrderSummaryScreen = ({ route, navigation }) => {
         <Ionicons name="home-outline" size={22} color="white" />
         <Text style={styles.homeButtonText}>Kembali ke Beranda</Text>
       </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 

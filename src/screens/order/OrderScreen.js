@@ -1,33 +1,78 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, Alert } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./OrderScreen.style";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
+import orderService from "../../services/orderService";
+import { useDispatch } from "react-redux";
+import { startLoading, stopLoading } from "../../store/slice/appSlice";
+import { useAuth } from "../../context/authContext";
 
-const servicesData = [
-  { label: "CKL (Cuci Kering Lipat)", value: "CKL", price: 10000 },
-  { label: "CKS (Cuci Kering Setrika)", value: "CKS", price: 15000 },
-  { label: "CSLMB (Cuci Selimut/Bed Cover)", value: "CSLMB", price: 25000 },
-  { label: "CJKT (Cuci Jaket Tebal)", value: "CJKT", price: 20000 },
-];
+// const servicesData = [
+//   { label: "CKL (Cuci Kering Lipat)", value: "CKL", price: 10000 },
+//   { label: "CKS (Cuci Kering Setrika)", value: "CKS", price: 15000 },
+//   { label: "CSLMB (Cuci Selimut/Bed Cover)", value: "CSLMB", price: 25000 },
+//   { label: "CJKT (Cuci Jaket Tebal)", value: "CJKT", price: 20000 },
+// ];
 
 const OrderScreen = ({ navigation }) => {
   const [services, setServices] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
   const [quantities, setQuantities] = useState({});
+  const [serviceOptions,setServiceOptions] = useState([])
+
+  // Redux
+  const dispatch = useDispatch()
+
+  // context 
+  const {currentUser} = useAuth()
+
+  const fetchProducts = async () => {
+    dispatch(startLoading())
+    try {
+      const products = await orderService.getProducts()
+      const formattedProducts = products.map(item => ({
+        label : item.name,
+        value : item.id,
+        price : item.price,
+        description : item.description
+      }))
+      setServiceOptions(formattedProducts)
+    } catch (error) {      
+      Alert.alert("Fail to get data")
+    }finally{
+      dispatch(stopLoading())
+    }
+  }
+
+  
+  useEffect(()=> {
+    fetchProducts()
+    console.log("Dapet gak ? ", currentUser);
+    
+  },[])
+
   
   const handleAddService = () => {
     if (!selectedService) {
       Alert.alert("Pilih Layanan", "Silakan pilih layanan terlebih dahulu!");
       return;
     }
+
+    const exisitingService = services.find(s => s.value === selectedService)
+    
+    if(exisitingService){
+      Alert.alert("Tidak boleh memilih layanan yang sama")
+      return
+    }
+
     if (services.length >= 3) {
       Alert.alert("Batas Layanan", "Maksimal 3 layanan per order!");
       return;
     }
-    const serviceDetail = servicesData.find((s) => s.value === selectedService);
+    const serviceDetail = serviceOptions.find((s) => s.value === selectedService);
     setServices([...services, serviceDetail]);
     setSelectedService(null);
     setQuantities({ ...quantities, [serviceDetail.value]: 1 });
@@ -41,23 +86,30 @@ const OrderScreen = ({ navigation }) => {
     return services.reduce((total, service) => total + service.price * (quantities[service.value] || 1), 0);
   };
 
+  const handlePostOrder = async (payload) => {
+    dispatch(startLoading())
+    try {
+      const responseOrder = await orderService.createOrder(payload.customerId, payload.orderDetails)
+      return responseOrder
+    } catch (error) {
+      Alert.alert("Transaction is Fail")
+    }finally { 
+      dispatch(stopLoading())
+    }
+  }
+
   const handleOrder = () => {
     if (services.length === 0) {
       Alert.alert("Order Kosong", "Tambahkan layanan sebelum melakukan order!");
       return;
     }
 
-    const orderDetails = {
-      user: "John Doe",
-      orderDate: new Date().toLocaleDateString(),
-      deliveryDate: new Date(new Date().setDate(new Date().getDate() + 3)).toLocaleDateString(),
-      services: services.map((s) => ({
-        name: s.label,
-        price: s.price,
-        quantity: quantities[s.value] || 1,
-      })),
-      total: calculateTotal(),
-    };
+    const orderDetails = services.map((s) => ({
+      label: s.label,
+      value: s.value,
+      price: s.price,
+      quantity: quantities[s.value] || 1,
+    }))
 
     Alert.alert(
         "Konfirmasi Pesanan",
@@ -69,8 +121,19 @@ const OrderScreen = ({ navigation }) => {
           },
           {
             text: "Ya",
-            onPress: () => {              
-              navigation.navigate(SCREEN_PATH.ORDER_SUMMARY,{orderDetails});
+            onPress: async () => {                            
+              const payload = {
+                customerId : currentUser.id,
+                orderDetails : orderDetails
+              }
+              const response = await handlePostOrder(payload)                            
+              // navigation.navigate(SCREEN_PATH.ORDER_SUMMARY,{orderDetails});
+              console.log("Trx Response " , response);
+              
+              navigation.reset({
+                index : 0,
+                routes : [{name : SCREEN_PATH.ORDER_SUMMARY, params : {orderResponse : response}}]
+              })
             },
           },
         ]
@@ -86,7 +149,7 @@ const OrderScreen = ({ navigation }) => {
       <DropDownPicker
         open={open}
         value={selectedService}
-        items={servicesData}
+        items={serviceOptions}
         setOpen={setOpen}
         setValue={setSelectedService}
         placeholder="Pilih Layanan"

@@ -10,7 +10,7 @@ import { useAuth } from "../../context/authContext";
 
 
 const LoginScreen = ({ navigation }) => {  
-  const {login,loading} = useAuth()
+  const {login} = useAuth()
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -34,13 +34,6 @@ const LoginScreen = ({ navigation }) => {
     );
   }, [formData, errors]);
 
-  // const handleLogin = async () => {
-  //   if (!isFormValid) return; 
-
-  //   // memanggil service...
-  //   if (!success) setErrors((prev) => ({ ...prev, password: "Email atau password salah!" }));
-  // };
-
   const handleLogin = async () => {
     if (!isFormValid) {
       Alert.alert("Login Gagal", "Silakan isi username dan password dengan benar!");
@@ -53,11 +46,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView 
-      behavior={Platform.OS === "ios" ? "padding" : "height"} 
-      keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 70}
-      style={styles.container}
-    >
+    <KeyboardAvoidingView style={styles.container}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
            {/* Header Section with Orange Background */}

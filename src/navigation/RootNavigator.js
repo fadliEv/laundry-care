@@ -6,15 +6,14 @@ import { SCREEN_PATH } from "./PathNavigator";
 import localStorage from "../utils/localStorage";
 import { useAuth } from "../context/authContext";
 import { Text, View } from "react-native";
+import { useSelector } from "react-redux";
 
 
 const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
-  const {currentUser,loading} = useAuth()
-
-  if (loading) return <View><Text>Loading dulu...</Text></View>
-
+  const {currentUser} = useAuth()  
+  
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
     {currentUser ? (
