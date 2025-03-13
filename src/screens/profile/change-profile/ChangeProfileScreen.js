@@ -13,8 +13,7 @@ const ChangeProfileScreen = ({ navigation }) => {
     address: "Jl. Mawar No. 123, Jakarta",
   });
 
-  const handleSave = (updatedData) => {
-    console.log("Profile Updated:", updatedData);
+  const handleSave = () => {    
     navigation.goBack();
   };
 

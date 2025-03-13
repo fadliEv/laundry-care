@@ -2,14 +2,10 @@ import React, { useEffect } from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
-import styles from "./OrderSummaryScreen.style";
+import styles from "./style/OrderSummaryScreen.style";
 
 const OrderSummaryScreen = ({ route, navigation }) => {
   const { orderResponse } = route.params;
-
-  useEffect(() => {
-    console.log("Order Response : ", orderResponse);
-  }, []);
 
   const handleGoHome = () => {
     navigation.reset({

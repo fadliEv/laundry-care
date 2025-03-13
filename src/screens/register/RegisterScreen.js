@@ -44,15 +44,12 @@ const RegisterScreen = ({ navigation }) => {
   return (
     <KeyboardAvoidingView 
       style={styles.container} 
-      // behavior={Platform.OS === "ios" ? "padding" : "height"} 
-      // keyboardVerticalOffset={Platform.OS === "ios" ? 90 : 70} 
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollView} keyboardShouldPersistTaps="handled">
           <View style={styles.logoSection}>
             <Image style={styles.logo} source={require("../../shared/assets/registration.png")} />
           </View>
-
           <RegisterForm 
             formData={formData} 
             errors={errors} 

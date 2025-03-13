@@ -24,8 +24,7 @@ const apiClient = async ({ url, method, params = null }) => {
   try {
     const response = await client[method](url, params);
     return response.data;
-  } catch (error) {
-    console.error("API Client Error:", error.response?.data || error.message);
+  } catch (error) {    
     throw error;
   }
 };

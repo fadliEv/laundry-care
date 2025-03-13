@@ -2,19 +2,13 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, FlatList, Alert } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Ionicons } from "@expo/vector-icons";
-import styles from "./OrderScreen.style";
+import styles from "./style/OrderScreen.style";
 import { SCREEN_PATH } from "../../navigation/PathNavigator";
 import orderService from "../../services/orderService";
 import { useDispatch } from "react-redux";
 import { startLoading, stopLoading } from "../../store/slice/appSlice";
 import { useAuth } from "../../context/authContext";
 
-// const servicesData = [
-//   { label: "CKL (Cuci Kering Lipat)", value: "CKL", price: 10000 },
-//   { label: "CKS (Cuci Kering Setrika)", value: "CKS", price: 15000 },
-//   { label: "CSLMB (Cuci Selimut/Bed Cover)", value: "CSLMB", price: 25000 },
-//   { label: "CJKT (Cuci Jaket Tebal)", value: "CJKT", price: 20000 },
-// ];
 
 const OrderScreen = ({ navigation }) => {
   const [services, setServices] = useState([]);
@@ -49,9 +43,7 @@ const OrderScreen = ({ navigation }) => {
 
   
   useEffect(()=> {
-    fetchProducts()
-    console.log("Dapet gak ? ", currentUser);
-    
+    fetchProducts()    
   },[])
 
   
@@ -126,10 +118,7 @@ const OrderScreen = ({ navigation }) => {
                 customerId : currentUser.id,
                 orderDetails : orderDetails
               }
-              const response = await handlePostOrder(payload)                            
-              // navigation.navigate(SCREEN_PATH.ORDER_SUMMARY,{orderDetails});
-              console.log("Trx Response " , response);
-              
+              const response = await handlePostOrder(payload)                                                        
               navigation.reset({
                 index : 0,
                 routes : [{name : SCREEN_PATH.ORDER_SUMMARY, params : {orderResponse : response}}]

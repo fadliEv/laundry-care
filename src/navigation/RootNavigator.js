@@ -1,12 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import TabNavigator from "./TabNavigator";
 import AuthStackNavigator from "./stacks/AuthStackNavigator";
 import { SCREEN_PATH } from "./PathNavigator";
-import localStorage from "../utils/localStorage";
 import { useAuth } from "../context/authContext";
-import { Text, View } from "react-native";
-import { useSelector } from "react-redux";
 
 
 const Stack = createNativeStackNavigator();

@@ -4,19 +4,20 @@ import authService from "../services/authService";
 import { useDispatch } from "react-redux";
 import { startLoading, stopLoading } from "../store/slice/appSlice";
 import { jwtDecode } from "jwt-decode";
+import { navigate } from "../navigation/refNavigation";
+import { SCREEN_PATH } from "../navigation/PathNavigator";
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(null)    
-    const dispatch = useDispatch()
+    const dispatch = useDispatch()    
 
     const checkAuth = async () => {
         dispatch(startLoading())
         try {        
             const token = await authService.getCurrentUser()
             const user = jwtDecode(token)
-            console.log('USERNYA : ',user);            
             if (user) {            
                 setCurrentUser(user)
             }
@@ -50,7 +51,7 @@ export const AuthProvider = ({children}) => {
         try {
             await authService.logout()            
             setCurrentUser(null)
-            return true
+            navigate(SCREEN_PATH.LOGIN)       
         } catch (error) {
             throw error            
         }finally{

@@ -9,7 +9,6 @@ const orderService = {
             })
             return response.data
         } catch (error) {
-            console.log("Error Get Products : ",error);            
             throw error
         }
     },
@@ -30,7 +29,6 @@ const orderService = {
             })
             return response
         } catch (error) {
-            console.log("Error create transaction  : ", error);            
             throw error
         }
     }
